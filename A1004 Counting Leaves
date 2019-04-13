@@ -1,0 +1,45 @@
+#include <cstdio>
+#include <vector>
+using namespace std;
+const int maxn=110;
+struct Node
+{
+    vector<int> child;
+}node[maxn];
+int HashTable[maxn]={0};
+int maxH=1;
+void DFS(int index,int level)
+{
+    maxH=max(level,maxH);
+    if(node[index].child.size()==0)
+    {
+        HashTable[level]++;
+        return;
+    }
+    for(int i=0;i<node[index].child.size();i++)
+    {
+        DFS(node[index].child[i],level+1);
+    }
+}
+int main()
+{
+    int n,m;
+    scanf("%d%d",&n,&m);
+    int id,k,child;
+    for(int i=0;i<m;i++)
+    {
+        scanf("%d%d",&id,&k);
+        for(int j=0;j<k;j++)
+        {
+            scanf("%d",&child);
+            node[id].child.push_back(child);
+        }
+    }
+    DFS(1,1);
+    printf("%d",HashTable[1]);
+    for(int i=2;i<=maxH;i++)
+    {
+        printf(" %d",HashTable[i]);
+    }
+    return 0;
+}
