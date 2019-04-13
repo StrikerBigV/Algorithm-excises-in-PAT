@@ -1,0 +1,84 @@
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+struct applicant
+{
+  int GE,GI,sum;
+  int rak,appID;
+  int cho[6];
+}app[40010];
+struct school
+{
+    int quota;
+    int appNum;
+    int id[40010];
+    int lastAdmit;
+}sch[110];
+bool cmpApp(applicant a,applicant b)
+{
+    if(a.sum!=b.sum) return a.sum>b.sum;
+    else return a.GE>b.GE;
+}
+bool cmpID(int a,int b)
+{
+    return app[a].appID<app[b].appID;
+}
+int main()
+{
+    int N,M,K;
+    scanf("%d%d%d",&N,&M,&K);
+    for(int i=0;i<M;i++)
+        {
+            scanf("%d",&sch[i].quota);
+            sch[i].appNum=0;
+            sch[i].lastAdmit=-1;
+        }
+    for(int i=0;i<N;i++)
+    {
+        app[i].appID=i;
+        scanf("%d%d",&app[i].GE,&app[i].GI);
+        app[i].sum=app[i].GE+app[i].GI;
+        for(int j=0;j<K;j++)
+        {
+            scanf("%d",&app[i].cho[j]);
+        }
+    }
+    sort(app,app+N,cmpApp);
+    for(int i=0;i<N;i++)
+    {
+        if(i>0&&app[i].sum==app[i-1].sum&&app[i].GE==app[i-1].GE)
+            app[i].rak=app[i-1].rak;
+        else app[i].rak=i;
+    }
+    for(int i=0;i<N;i++)
+    {
+        for(int j=0;j<K;j++)
+        {
+            int choice=app[i].cho[j];
+            int num=sch[choice].appNum;
+            int last=sch[choice].lastAdmit;
+            if(num<sch[choice].quota||(last!=-1&&app[i].rak==app[last].rak))
+            {
+                sch[choice].id[num]=i;
+                sch[choice].lastAdmit=i;
+                sch[choice].appNum++;
+                break;
+            }
+        }
+    }
+    for(int i=0;i<M;i++)
+    {
+        if(sch[i].appNum>0)
+        {
+            sort(sch[i].id,sch[i].id+sch[i].appNum,cmpID);
+            for(int j=0;j<sch[i].appNum;j++)
+            {
+                printf("%d",app[sch[i].id[j]].appID);
+                if(j<sch[i].appNum-1) printf(" ");
+            }
+        }
+        printf("\n");
+    }
+    return 0;
+}
