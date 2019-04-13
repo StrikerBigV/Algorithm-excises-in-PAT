@@ -1,0 +1,41 @@
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+struct Mooncake
+{
+    double amount,price,perPrice;
+}mc[1010];
+bool cmp(Mooncake a,Mooncake b)
+{
+    return a.perPrice>b.perPrice;
+}
+int main()
+{
+    int N;
+    double demand,profit;
+    scanf("%d%lf",&N,&demand);
+    for(int i=0;i<N;i++)
+        scanf("%lf",&mc[i].amount);
+    for(int i=0;i<N;i++)
+    {
+        scanf("%lf",&mc[i].price);
+        mc[i].perPrice=mc[i].price/mc[i].amount;
+    }
+    sort(mc,mc+N,cmp);
+    for(int i=0;i<N;i++)
+    {
+        if(demand>=mc[i].amount)
+        {
+            demand-=mc[i].amount;
+            profit+=mc[i].price;
+        }
+        else
+        {
+            profit+=mc[i].perPrice*demand;
+            break;
+        }
+    }
+    printf("%.2f",profit);
+    return 0;
+}
