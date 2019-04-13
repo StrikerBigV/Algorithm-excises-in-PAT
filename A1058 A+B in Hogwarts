@@ -1,0 +1,17 @@
+#include <iostream>
+#include <cstdio>
+using namespace std;
+int main()
+{
+    int G[3],S[3],K[3],g,s,k;
+    scanf("%d.%d.%d ",&G[0],&S[0],&K[0]);
+    scanf("%d.%d.%d",&G[1],&S[1],&K[1]);
+    for(int i=0;i<2;i++)
+    {
+        k=(K[0]+K[1])%29;
+        s=((K[0]+K[1])/29+S[0]+S[1])%17;
+        g=((K[0]+K[1])/29+S[0]+S[1])/17+G[0]+G[1];
+    }
+    printf("%d.%d.%d",g,s,k);
+    return 0;
+}
