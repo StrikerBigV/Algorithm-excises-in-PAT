@@ -1,0 +1,86 @@
+#include <cstdio>
+#include <vector>
+using namespace std;
+struct Node
+{
+    int data;
+    Node* lchild;
+    Node* rchild;
+};
+void Insert(Node* &root,int x)
+{
+    if(root==NULL)
+    {
+        root=new Node;
+        root->data=x;
+        root->lchild=root->rchild=NULL;
+        return;
+    }
+    if(root->data>x) Insert(root->lchild,x);
+    else Insert(root->rchild,x);
+}
+void preOrder(Node* root,vector<int> &vi)
+{
+    if(root==NULL) return;
+    vi.push_back(root->data);
+    preOrder(root->lchild,vi);
+    preOrder(root->rchild,vi);
+}
+void preMiOrder(Node* root,vector<int>& vi)
+{
+    if(root==NULL) return;
+    vi.push_back(root->data);
+    preMiOrder(root->rchild,vi);
+    preMiOrder(root->lchild,vi);
+}
+void postOrder(Node* root,vector<int>& vi)
+{
+    if(root==NULL) return;
+    postOrder(root->lchild,vi);
+    postOrder(root->rchild,vi);
+    vi.push_back(root->data);
+}
+void postMiOrder(Node* root,vector<int>& vi)
+{
+    if(root==NULL) return;
+    postMiOrder(root->rchild,vi);
+    postMiOrder(root->lchild,vi);
+    vi.push_back(root->data);
+}
+vector<int> origin,pre,preM,post,postM;
+int main()
+{
+    int n,num;
+    scanf("%d",&n);
+    Node* root=NULL;
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&num);
+        origin.push_back(num);
+        Insert(root,num);
+    }
+    preOrder(root,pre);
+    preMiOrder(root,preM);
+    postOrder(root,post);
+    postMiOrder(root,postM);
+    if(origin==pre)
+    {
+        printf("YES\n");
+        for(int i=0;i<post.size();i++)
+        {
+            printf("%d",post[i]);
+            if(i<post.size()-1) printf(" ");
+        }
+    }
+    else if(origin==preM)
+    {
+        printf("YES\n");
+        for(int i=0;i<postM.size();i++)
+        {
+            printf("%d",postM[i]);
+            if(i<postM.size()-1) printf(" ");
+        }
+    }
+    else printf("NO\n");
+    return 0;
+}
