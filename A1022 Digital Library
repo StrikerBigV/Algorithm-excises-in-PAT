@@ -1,0 +1,56 @@
+#include <cstdio>
+#include <iostream>
+#include <map>
+#include <string>
+#include <set>
+using namespace std;
+map<string,set<int>> titleToID,authorToID,keyToID,puberToID,pubyearToID;
+void query(map<string,set<int>>& mp,string& s)
+{
+    if(mp.find(s)==mp.end()) printf("Not Found\n");
+    else
+    {
+        for(set<int>::iterator it=mp[s].begin();it!=mp[s].end();it++)
+            printf("%07d\n",*it);
+    }
+}
+int main()
+{
+    int n,id;
+    string title,author,key,puber,pubyear;
+    scanf("%d",&n);
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&id);
+        getchar();
+        getline(cin,title);
+        titleToID[title].insert(id);
+        getline(cin,author);
+        authorToID[author].insert(id);
+        while(cin>>key)
+        {
+            keyToID[key].insert(id);
+            char c=getchar();
+            if(c=='\n') break;
+        }
+        getline(cin,puber);
+        puberToID[puber].insert(id);
+        getline(cin,pubyear);
+        pubyearToID[pubyear].insert(id);
+    }
+    int m,order;
+    string str;
+    scanf("%d",&m);
+    for(int i=0;i<m;i++)
+    {
+        scanf("%d: ",&order);
+        getline(cin,str);
+        cout<<order<<": "<<str<<endl;
+        if(order==1) query(titleToID,str);
+        else if(order==2) query(authorToID,str);
+        else if(order==3) query(keyToID,str);
+        else if(order==4) query(puberToID,str);
+        else query(pubyearToID,str);
+    }
+    return 0;
+}
