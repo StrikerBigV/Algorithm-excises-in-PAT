@@ -1,0 +1,54 @@
+#include <cstdio>
+#include <queue>
+#include <algorithm>
+using namespace std;
+const int maxn=110;
+struct Node
+{
+    int data;
+    int lchild;
+    int rchild;
+}node[maxn];
+int n,number[maxn],index=0;
+void inOrder(int root)
+{
+    if(root==-1) return;
+    inOrder(node[root].lchild);
+    node[root].data=number[index++];
+    inOrder(node[root].rchild);
+}
+int num=0;
+void levelOrder(int root)
+{
+    queue<int> Q;
+    Q.push(root);
+    while(!Q.empty())
+    {
+        int top=Q.front();
+        Q.pop();
+        printf("%d",node[top].data);
+        num++;
+        if(num<n) printf(" ");
+        if(node[top].lchild!=-1) Q.push(node[top].lchild);
+        if(node[top].rchild!=-1) Q.push(node[top].rchild);
+    }
+}
+int main()
+{
+    scanf("%d",&n);
+    int left,right;
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d%d",&left,&right);
+        node[i].lchild=left;
+        node[i].rchild=right;
+    }
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&number[i]);
+    }
+    sort(number,number+n);
+    inOrder(0);
+    levelOrder(0);
+    return 0;
+}
