@@ -1,0 +1,41 @@
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+int num[5];
+bool cmp(int a,int b)
+{
+    return a>b;
+}
+int main()
+{
+    int number;
+    scanf("%d",&number);
+    for(int i=3;i>=0;i--)
+    {
+        num[i]=number%10;
+        number/=10;
+    }
+    int num1,num2;
+    sort(num,num+4,cmp);
+    num1=num[0]*1000+num[1]*100+num[2]*10+num[3];
+    sort(num,num+4);
+    num2=num[0]*1000+num[1]*100+num[2]*10+num[3];
+    int res=num1-num2;
+    while(res!=0&&res!=6174)
+    {
+        printf("%04d - %04d = %04d\n",num1,num2,res);
+        for(int i=3;i>=0;i--)
+        {
+            num[i]=res%10;
+            res/=10;
+        }
+        sort(num,num+4,cmp);
+        num1=num[0]*1000+num[1]*100+num[2]*10+num[3];
+        sort(num,num+4);
+        num2=num[0]*1000+num[1]*100+num[2]*10+num[3];
+        res=num1-num2;
+    }
+    printf("%04d - %04d = %04d",num1,num2,res);
+    return 0;
+}
