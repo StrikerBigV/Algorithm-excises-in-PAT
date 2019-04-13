@@ -1,0 +1,71 @@
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+using namespace std;
+const int maxv=510;
+const int INF=1000000000;
+int n,G[maxv][maxv];
+int d[maxv],r[maxv],rescue[maxv],num[maxv];
+bool isVisit[maxv]={false};
+void Dijkstra(int s)
+{
+    fill(d,d+maxv,INF);
+    memset(num,0,sizeof(num));
+    memset(r,0,sizeof(r));
+    d[s]=0;
+    r[s]=rescue[s];
+    num[s]=1;
+    for(int i=0;i<n;i++)
+    {
+        int u=-1,MIN=INF;
+        for(int j=0;j<n;j++)
+        {
+            if(d[j]<MIN&&isVisit[j]==false)
+            {
+                u=j;
+                MIN=d[j];
+            }
+        }
+        if(u==-1) return;
+        isVisit[u]=true;
+        for(int v=0;v<n;v++)
+        {
+            if(isVisit[v]==false&&G[u][v]!=INF)
+            {
+                if(d[v]>d[u]+G[u][v])
+                {
+                    d[v]=d[u]+G[u][v];
+                    r[v]=r[u]+rescue[v];
+                    num[v]=num[u];
+                }
+                else if(d[v]==d[u]+G[u][v])
+                {
+                    if(r[v]<r[u]+rescue[v])
+                    {
+                        r[v]=r[u]+rescue[v];
+                    }
+                    num[v]+=num[u];
+                }
+            }
+        }
+    }
+}
+int main()
+{
+    int m,c1,c2,c3,c4,len;
+    scanf("%d%d%d%d",&n,&m,&c1,&c2);
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&rescue[i]);
+    }
+    fill(G[0],G[0]+maxv*maxv,INF);
+    for(int i=0;i<m;i++)
+    {
+        scanf("%d%d%d",&c3,&c4,&len);
+        G[c3][c4]=len;
+        G[c4][c3]=len;
+    }
+    Dijkstra(c1);
+    printf("%d %d\n",num[c2],r[c2]);
+    return 0;
+}
