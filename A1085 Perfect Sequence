@@ -1,0 +1,19 @@
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+int num[100010];
+int main()
+{
+    int n,p,res=1;
+    scanf("%d%d",&n,&p);
+    for(int i=0;i<n;i++)
+        scanf("%d",&num[i]);
+    sort(num,num+n);
+    for(int i=0;i<n;i++)
+    {
+        int j=upper_bound(num+i+1,num+n,(long long)num[i]*p)-num;
+        res=max(res,j-i);
+    }
+    printf("%d",res);
+    return 0;
+}
