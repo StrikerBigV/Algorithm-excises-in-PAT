@@ -1,0 +1,41 @@
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+struct student
+{
+    char name[12];
+    char id[12];
+    int grade;
+}stu[100],res[100];
+bool cmp(student a,student b)
+{
+    return a.grade>b.grade;
+}
+int main()
+{
+    int N;
+    scanf("%d",&N);
+    for(int i=0;i<N;i++)
+    {
+        scanf("%s%s%d",stu[i].name,stu[i].id,&stu[i].grade);
+    }
+    sort(stu,stu+N,cmp);
+    int grade1,grade2,printNum=0;
+    scanf("%d%d",&grade1,&grade2);
+    for(int j=0;j<N-1;j++)
+    {
+        if(stu[j].grade>=grade1&&stu[j].grade<=grade2)
+        {
+            printf("%s %s\n",stu[j].name,stu[j].id);
+            printNum++;
+        }
+    }
+    if(stu[N-1].grade>=grade1&&stu[N-1].grade<=grade2)
+    {
+        printf("%s %s",stu[N-1].name,stu[N-1].id);
+        printNum++;
+    }
+    if(printNum==0) printf("NONE\n");
+    return 0;
+}
