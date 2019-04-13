@@ -1,0 +1,28 @@
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+int hashTable[1010]={0};
+int num[100010];
+int main()
+{
+    int n,m;
+    scanf("%d%d",&n,&m);
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&num[i]);
+        hashTable[num[i]]++;
+    }
+    sort(num,num+n);
+    bool found=false;
+    for(int i=0;i<n;i++)
+    {
+        if((hashTable[m-num[i]]>0&&m-num[i]!=num[i])||(m-num[i]==num[i]&&hashTable[num[i]]>1))
+        {
+            printf("%d %d\n",num[i],m-num[i]);
+            found=true;
+            break;
+        }
+    }
+    if(found==false) printf("No Solution\n");
+    return 0;
+}
