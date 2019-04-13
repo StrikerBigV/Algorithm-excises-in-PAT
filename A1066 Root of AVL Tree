@@ -1,0 +1,103 @@
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+struct Node
+{
+    int data,height;
+    Node* lchild;
+    Node* rchild;
+};
+Node* newNode(int x)
+{
+    Node* node=new Node;
+    node->data=x;
+    node->height=1;
+    node->lchild=node->rchild=NULL;
+    return node;
+}
+int getHeight(Node* root)
+{
+    if(root==NULL) return 0;
+    return root->height;
+}
+int getBalanceFactor(Node* root)
+{
+    return getHeight(root->lchild)-getHeight(root->rchild);
+}
+void updateHeight(Node* root)
+{
+    root->height=max(getHeight(root->lchild),getHeight(root->rchild))+1;
+}
+void L(Node* &root)
+{
+    Node* temp=root->rchild;
+    root->rchild=temp->lchild;
+    temp->lchild=root;
+    updateHeight(root);
+    updateHeight(temp);
+    root=temp;
+}
+void R(Node* &root)
+{
+    Node* temp=root->lchild;
+    root->lchild=temp->rchild;
+    temp->rchild=root;
+    updateHeight(root);
+    updateHeight(temp);
+    root=temp;
+}
+void Insert(Node* &root,int x)
+{
+    if(root==NULL)
+    {
+        root=newNode(x);
+        return;
+    }
+    if(x<root->data)
+    {
+        Insert(root->lchild,x);
+        updateHeight(root);
+        if(getBalanceFactor(root)==2)
+        {
+            if(getBalanceFactor(root->lchild)==1)
+            {
+                R(root);
+            }
+            else if(getBalanceFactor(root->lchild)==-1)
+            {
+                L(root->lchild);
+                R(root);
+            }
+        }
+    }
+    else
+    {
+        Insert(root->rchild,x);
+        updateHeight(root);
+        if(getBalanceFactor(root)==-2)
+        {
+            if(getBalanceFactor(root->rchild)==-1)
+            {
+                L(root);
+            }
+            else if(getBalanceFactor(root->rchild)==1)
+            {
+                R(root->rchild);
+                L(root);
+            }
+        }
+    }
+}
+int main()
+{
+    int n,sample;
+    scanf("%d",&n);
+    Node* root=NULL;
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&sample);
+        Insert(root,sample);
+    }
+    printf("%d\n",root->data);
+    return 0;
+}
