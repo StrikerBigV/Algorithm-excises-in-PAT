@@ -1,0 +1,41 @@
+#include <cstdio>
+#include <cstring>
+using namespace std;
+int hashTable[80]={0};
+int change(char c)
+{
+    int id;
+    if(c>='0'&&c<='9') id=c-'0';
+    if(c>='a'&&c<='z') id=c-'a'+10;
+    if(c>='Z'&&c<='Z') id=c-'A'+36;
+    return id;
+}
+int main()
+{
+    int lackNum=0;
+    char sell[1010],buy[1010];
+    scanf("%s",sell);
+    scanf("%s",buy);
+    int len1=strlen(sell);
+    int len2=strlen(buy);
+    for(int i=0;i<len1;i++)
+    {
+        int id1=change(sell[i]);
+        hashTable[id1]++;
+    }
+    for(int i=0;i<len2;i++)
+    {
+        int id2=change(buy[i]);
+        hashTable[id2]--;
+        if(hashTable[id2]<0)
+        {
+            lackNum++;
+        }
+    }
+    if(lackNum>0)
+    {
+        printf("No %d\n",lackNum);
+    }
+    else printf("Yes %d\n",len1-len2);
+    return 0;
+}
