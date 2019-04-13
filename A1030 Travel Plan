@@ -1,0 +1,79 @@
+#include <cstdio>
+#include <cstring>
+#include <iostream>
+using namespace std;
+const int maxv=510;
+const int INF=0x3fffffff;
+int n,G[maxv][maxv],cost[maxv][maxv];
+int d[maxv],c[maxv],pre[maxv];
+bool isVisit[maxv]={false};
+void Dijkstra(int s)
+{
+    fill(d,d+maxv,INF);
+    fill(c,c+maxv,INF);
+    for(int i=0;i<n;i++)
+    {
+        pre[i]=i;
+    }
+    d[s]=0;
+    c[s]=0;
+    for(int i=0;i<n;i++)
+    {
+        int u=-1,MIN=INF;
+        for(int j=0;j<n;j++)
+        {
+            if(isVisit[j]==false&&d[j]<MIN)
+            {
+                u=j;
+                MIN=d[j];
+            }
+        }
+        if(u==-1) return;
+        isVisit[u]=true;
+        for(int v=0;v<n;v++)
+        {
+            if(isVisit[v]==false&&G[u][v]!=INF)
+            {
+                if(d[v]>d[u]+G[u][v])
+                {
+                    d[v]=d[u]+G[u][v];
+                    c[v]=c[u]+cost[u][v];
+                    pre[v]=u;
+                }
+                else if(d[v]==d[u]+G[u][v]&&c[v]>c[u]+cost[u][v])
+                {
+                    c[v]=c[u]+cost[u][v];
+                    pre[v]=u;
+                }
+            }
+        }
+    }
+}
+void DFS(int st,int v)
+{
+    if(st==v)
+    {
+        printf("%d ",st);
+        return;
+    }
+    DFS(st,pre[v]);
+    printf("%d ",v);
+}
+int main()
+{
+    int m,st,ed;
+    int c1,c2,dis,cos;
+    scanf("%d%d%d%d",&n,&m,&st,&ed);
+    fill(G[0],G[0]+maxv*maxv,INF);
+    for(int i=0;i<m;i++)
+    {
+        scanf("%d%d%d%d",&c1,&c2,&dis,&cos);
+        G[c1][c2]=dis;
+        G[c2][c1]=dis;
+        cost[c1][c2]=cost[c2][c1]=cos;
+    }
+    Dijkstra(st);
+    DFS(st,ed);
+    printf("%d %d\n",d[ed],c[ed]);
+    return 0;
+}
