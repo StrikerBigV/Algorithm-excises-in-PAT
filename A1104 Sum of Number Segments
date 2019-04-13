@@ -1,0 +1,17 @@
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    int n;
+    double num,res=0;
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++)
+    {
+        scanf("%lf",&num);
+        res+=num*i*(n+1-i);
+    }
+    printf("%.2f\n",res);
+    return 0;
+}
