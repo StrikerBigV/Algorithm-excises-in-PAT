@@ -1,0 +1,23 @@
+#include <iostream>
+#include <cstdio>
+using namespace std;
+char radix[13]={'0','1','2','3','4','5','6','7','8','9','A','B','C'};
+int main()
+{
+    int color,res[4],rest[4];
+    for(int i=0;i<2;i++)
+    {
+        scanf("%d ",&color);
+        res[i]=color/13;
+        rest[i]=color%13;
+    }
+    scanf("%d",&color);
+    res[2]=color/13;
+    rest[2]=color%13;
+    printf("#");
+    for(int j=0;j<3;j++)
+    {
+        printf("%c%c",radix[res[j]],radix[rest[j]]);
+    }
+    return 0;
+}
