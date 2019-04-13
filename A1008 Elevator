@@ -1,0 +1,18 @@
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    int n,ele[110],time=0;
+    ele[0]=0;
+    scanf("%d",&n);
+    for(int i=1;i<=n;i++)
+    {
+        scanf("%d",&ele[i]);
+        if(ele[i]>ele[i-1]) time+=(ele[i]-ele[i-1])*6+5;
+        else time+=(ele[i-1]-ele[i])*4+5;
+    }
+    printf("%d",time);
+    return 0;
+}
