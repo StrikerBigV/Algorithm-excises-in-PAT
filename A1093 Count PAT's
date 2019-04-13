@@ -1,0 +1,34 @@
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cstring>
+using namespace std;
+int leftPNum[100010],rightTNum[100010];
+const int MOD=1000000007;
+int main()
+{
+    char str[100010];
+    cin>>str;
+    int len=strlen(str),num=0;
+    leftPNum[0]=0;
+    for(int i=1;i<len;i++)
+    {
+        if(str[i-1]=='P')
+            leftPNum[i]=leftPNum[i-1]+1;
+        else leftPNum[i]=leftPNum[i-1];
+    }
+    rightTNum[len-1]=0;
+    for(int i=len-2;i>=0;i--)
+    {
+        if(str[i+1]=='T')
+            rightTNum[i]=rightTNum[i+1]+1;
+        else rightTNum[i]=rightTNum[i+1];
+    }
+    for(int i=1;i<len;i++)
+    {
+        if(str[i]=='A')
+            num=(num+leftPNum[i]*rightTNum[i])%MOD;
+    }
+    printf("%d",num);
+    return 0;
+}
