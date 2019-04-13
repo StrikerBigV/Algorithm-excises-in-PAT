@@ -1,0 +1,41 @@
+#include <iostream>
+#include <map>
+#include <string>
+using namespace std;
+map<string,int> mp;
+int main()
+{
+//	 freopen("11.txt","r",stdin);
+    string in_put;
+	getline(cin,in_put);
+	int len = in_put.size();
+	string init = "";
+	for(int i = 0; i < len; i++) {
+
+		if((in_put[i] >= 'a' && in_put[i] <= 'z')
+		|| (in_put[i] >= '0' && in_put[i] <= '9')){
+			init += in_put[i];
+			if(i == len - 1) mp[init]++;
+		}else if(in_put[i] >= 'A' && in_put[i] <= 'Z'){
+			init += (in_put[i] + 'a' - 'A');
+			if(i == len - 1) mp[init]++;
+		}else{
+			if(mp.find(init) != mp.end()){
+			  if(init != "")	mp[init]++;
+			}else{
+			  if(init != "")	mp[init] = 1;
+			}
+			init = "";
+		}
+	}
+	int cnt = 0;
+	string aim;
+	for(map<string,int>::iterator it = mp.begin(); it != mp.end(); it++){
+		if(it->second > cnt) {
+			cnt = it->second;
+			aim = it->first;
+		}
+	}
+	cout<<aim<<" "<<cnt<<endl;
+	return 0;
+}
