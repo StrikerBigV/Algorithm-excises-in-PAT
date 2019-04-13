@@ -1,0 +1,111 @@
+#include <cstdio>
+ #include <map>
+ #include <iostream>
+ #include <string>
+ #include <cstring>
+ #include <algorithm>
+ using namespace std;
+ const int maxn=210;
+ const int INF=0x3fffffff;
+ int n,cost[maxn][maxn];
+ int d[maxn],hap[maxn],h[maxn],pre[maxn],num[maxn],pt[maxn];
+ bool isVisit[maxn]={false};
+ map<string,int> strToID;
+ map<int,string> IDToStr;
+ void Dijkstra(int s)
+ {
+     fill(d,d+maxn,INF);
+     memset(h,0,sizeof(h));
+     memset(num,0,sizeof(num));
+     memset(pt,0,sizeof(pt));
+     d[s]=0;
+     h[s]=hap[s];
+     num[s]=1;
+     for(int i=0;i<n;i++) pre[i]=i;
+     for(int i=0;i<n;i++)
+     {
+         int u=-1,MIN=INF;
+         for(int j=0;j<n;j++)
+         {
+             if(isVisit[j]==false&&d[j]<MIN)
+             {
+                 u=j;
+                 MIN=d[j];
+             }
+         }
+         if(u==-1) return;
+         isVisit[u]=true;
+         for(int v=0;v<n;v++)
+         {
+             if(isVisit[v]==false&&cost[u][v]!=INF)
+             {
+                 if(d[v]>d[u]+cost[u][v])
+                 {
+                     d[v]=d[u]+cost[u][v];
+                     h[v]=h[u]+hap[v];
+                     pre[v]=u;
+                     num[v]=num[u];
+                     pt[v]=pt[u]+1;
+                 }
+                 else if(d[v]==d[u]+cost[u][v])
+                 {
+                     num[v]+=num[u];
+                     if(h[v]<h[u]+hap[v])
+                     {
+                         h[v]=h[u]+hap[v];
+                         pre[v]=u;
+                         pt[v]=pt[u]+1;
+                     }
+                     else if(h[v]==h[u]+hap[v])
+                     {
+                         double uAvg=1.0*(h[u]+hap[v])/(pt[u]+1);
+                         double vAvg=1.0*h[v]/pt[v];
+                         if(uAvg>vAvg)
+                         {
+                             pre[v]=u;
+                             pt[v]=pt[u]+1;
+                         }
+                     }
+                 }
+             }
+         }
+     }
+ }
+ void DFS(int v)
+ {
+     if(v==0)
+     {
+         cout<<IDToStr[v];
+         return;
+     }
+     DFS(pre[v]);
+     cout<<"->"<<IDToStr[v];
+ }
+ int main()
+ {
+     int k;
+     string st,city,city1,city2;
+     cin>>n>>k>>st;
+     strToID[st]=0;
+     IDToStr[0]=st;
+     for(int i=1;i<=n-1;i++)
+     {
+         cin>>city>>hap[i];
+         IDToStr[i]=city;
+         strToID[city]=i;
+     }
+     fill(cost[0],cost[0]+maxn*maxn,INF);
+     for(int i=0;i<k;i++)
+     {
+         cin>>city1>>city2;
+         int c1=strToID[city1];
+         int c2=strToID[city2];
+         cin>>cost[c1][c2];
+         cost[c2][c1]=cost[c1][c2];
+     }
+     Dijkstra(0);
+     int rom=strToID["ROM"];
+     printf("%d %d %d %d\n",num[rom],d[rom],h[rom],h[rom]/pt[rom]);
+     DFS(rom);
+     return 0;
+ }
