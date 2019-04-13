@@ -1,0 +1,56 @@
+#include <cstdio>
+#include <vector>
+#include <queue>
+using namespace std;
+const int maxn=110;
+struct Node
+{
+    int level;
+    vector<int> child;
+}node[maxn];
+int HashTable[maxn];
+void BFS(int root)
+{
+    queue<int> Q;
+    Q.push(root);
+    node[root].level=1;
+    while(!Q.empty())
+    {
+        int top=Q.front();
+        Q.pop();
+        HashTable[node[top].level]++;
+        for(int i=0;i<node[top].child.size();i++)
+        {
+            int child=node[top].child[i];
+            node[child].level=node[top].level+1;
+            Q.push(child);
+        }
+    }
+}
+int main()
+{
+    int n,m;
+    scanf("%d%d",&n,&m);
+    int id,k,child;
+    for(int i=0;i<m;i++)
+    {
+        scanf("%d%d",&id,&k);
+        for(int j=0;j<k;j++)
+        {
+            scanf("%d",&child);
+            node[id].child.push_back(child);
+        }
+    }
+    BFS(1);
+    int maxNum=1,resLevel=1;
+    for(int i=1;i<=n;i++)
+    {
+        if(HashTable[i]>maxNum)
+        {
+            maxNum=HashTable[i];
+            resLevel=i;
+        }
+    }
+    printf("%d %d\n",maxNum,resLevel);
+    return 0;
+}
