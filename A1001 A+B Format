@@ -1,0 +1,27 @@
+#include <iostream>
+#include <cstdio>
+using namespace std;
+int num[10];
+int main()
+{
+    int a,b,sum;
+    scanf("%d %d",&a,&b);
+    sum=a+b;
+    if(sum<0) {
+        printf("-");
+    sum=-sum;
+    }
+    int size1=0;
+    if(sum==0) num[size1++]=0;
+    while(sum!=0)
+    {
+        num[size1++]=sum%10;
+        sum/=10;
+    }
+    for(int j=size1-1;j>=0;j--)
+    {
+        printf("%d",num[j]);
+        if(j>0&&j%3==0) printf(",");
+    }
+    return 0;
+}
