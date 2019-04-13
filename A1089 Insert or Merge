@@ -1,0 +1,87 @@
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+int init[111],tempInit[111],resul[111];
+int n;
+bool isSame(int A[],int B[])
+{
+    bool flag=true;
+    for(int i=0;i<n;i++)
+    {
+        if(A[i]!=B[i])
+        flag=false;
+    }
+    return flag;
+}
+bool insertSort()
+{
+    bool flag=false;
+    for(int i=1;i<n;i++)
+    {
+        if(i!=1&&isSame(tempInit,resul))
+            flag=true;
+        int temp=tempInit[i],j=i;
+        while(j>0&&tempInit[j-1]>temp)
+        {
+            tempInit[j]=tempInit[j-1];
+            j--;
+        }
+        tempInit[j]=temp;
+        if(flag==true) return true;
+    }
+    return false;
+}
+void mergeSort()
+{
+    bool flag=false;
+    for(int step=2;step<=n;step*=2)
+    {
+        if(step!=2&&isSame(tempInit,resul))
+        {
+            flag=true;
+        }
+        for(int i=0;i<n;i+=step)
+        {
+            sort(tempInit+i,tempInit+min(i+step,n));
+        }
+        if(flag==true)
+        {
+            for(int i=0;i<n;i++)
+            {
+                printf("%d",tempInit[i]);
+                if(i<n-1) printf(" ");
+            }
+            return;
+        }
+    }
+}
+int main()
+{
+    scanf("%d",&n);
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&init[i]);
+        tempInit[i]=init[i];
+    }
+    for(int i=0;i<n;i++)
+    {
+        scanf("%d",&resul[i]);
+    }
+    if(insertSort())
+    {
+        printf("Insertion Sort\n");
+        for(int i=0;i<n;i++)
+        {
+            printf("%d",tempInit[i]);
+            if(i<n-1) printf(" ");
+        }
+    }
+    else
+    {
+        printf("Merge Sort\n");
+        for(int i=0;i<n;i++)
+            tempInit[i]=init[i];
+        mergeSort();
+    }
+    return 0;
+}
