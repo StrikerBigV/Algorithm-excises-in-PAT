@@ -1,0 +1,69 @@
+#include <cstdio>
+#include <algorithm>
+using namespace std;
+const int INF=100000000;
+struct station
+{
+    double Pi;
+    double Di;
+}sta[510];
+bool cmp(station a,station b)
+{
+    if(a.Di!=b.Di) return a.Di<b.Di;
+}
+int main()
+{
+    double Cm,D,Da;
+    int n;
+    scanf("%lf%lf%lf%d",&Cm,&D,&Da,&n);
+    double Dfull=Cm*Da;
+    double nowTank=0,res=0;
+    for(int i=0;i<n;i++)
+    {
+        scanf("%lf%lf",&sta[i].Pi,&sta[i].Di);
+    }
+    sta[n].Di=D;
+    sta[n].Pi=0;
+    sort(sta,sta+n,cmp);
+    if(sta[0].Di!=0) printf("The maximum travel distance = 0.00\n");
+    else{
+    int now=0;
+    while(now<n)
+    {
+        int next=-1;
+        double minP=INF;
+        for(int i=now+1;i<=n&&(sta[i].Di-sta[now].Di<=Dfull);i++)
+        {
+            if(sta[i].Pi<minP)
+            {
+                next=i;
+                minP=sta[i].Pi;
+            }
+            if(minP<sta[now].Pi) break;
+        }
+
+        if(next==-1)
+        {
+            break;
+        }
+        double need=sta[next].Di-sta[now].Di;
+        if(sta[next].Pi<sta[now].Pi)
+        {
+            if(nowTank<need)
+            {
+                res+=(need-nowTank)*sta[now].Pi;
+                nowTank=0;
+            }
+            else nowTank-=need;
+        }
+        else
+        {
+            res+=sta[now].Pi*(Dfull-nowTank);
+            nowTank=Dfull-need;
+        }
+        now=next;}
+    if(now==n) printf("%.2f\n",res/Da);
+    else printf("The maximum travel distance = %.2f",sta[now].Di+Dfull);
+    }
+    return 0;
+}
