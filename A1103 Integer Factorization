@@ -1,0 +1,59 @@
+#include <cstdio>
+#include <vector>
+using namespace std;
+const int maxn=410;
+int n,k,p;
+int maxSum=-1;
+vector<int> fac,res,temp;
+int power(int x)
+{
+    int res=1;
+    for(int i=0;i<p;i++)
+        res*=x;
+    return res;
+}
+void init()
+{
+    int i=0,temp=0;
+    while(temp<=n)
+    {
+        fac.push_back(temp);
+        temp=power(++i);
+    }
+}
+void DFS(int index,int nowK,int sumPower,int sum)
+{
+    if(nowK==k&&sumPower==n)
+    {
+        if(sum>maxSum)
+        {
+            maxSum=sum;
+            res=temp;
+        }
+        return;
+    }
+    if(nowK>k||sumPower>n) return;
+    if(index>=1)
+    {
+        temp.push_back(index);
+        DFS(index,nowK+1,sumPower+fac[index],sum+index);
+        temp.pop_back();
+        DFS(index-1,nowK,sumPower,sum);
+    }
+}
+int main()
+{
+    scanf("%d%d%d",&n,&k,&p);
+    init();
+    DFS(fac.size()-1,0,0,0);
+    if(maxSum==-1) printf("Impossible\n");
+    else
+    {
+        printf("%d = %d^%d",n,res[0],p);
+        for(int i=1;i<res.size();i++)
+        {
+            printf(" + %d^%d",res[i],p);
+        }
+    }
+    return 0;
+}
