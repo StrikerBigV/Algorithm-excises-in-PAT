@@ -1,0 +1,41 @@
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+using namespace std;
+struct student
+{
+  char name[15];
+  char id[15];
+  char gender;
+  int grade;
+}stu,malelow,femalehigh;
+int main()
+{
+    int N,count1=0,count2=0,diff;
+    scanf("%d",&N);
+    malelow.grade=101,femalehigh.grade=-1;
+    for(int i=0;i<N;i++)
+        {
+
+            scanf("%s %c %s %d",stu.name,&stu.gender,stu.id,&stu.grade);
+            if(stu.gender=='F')
+            {
+                count1++;
+                if(stu.grade>femalehigh.grade)
+                    femalehigh=stu;
+            }
+            else {
+                count2++;
+                if(stu.grade<malelow.grade)
+                    malelow=stu;
+            }
+        }
+    diff=max(femalehigh.grade-malelow.grade,malelow.grade-femalehigh.grade);
+    if(count1==0) printf("%s","Absent\n");
+        else printf("%s %s\n",femalehigh.name,femalehigh.id);
+    if(count2==0) printf("%s","Absent\n");
+        else printf("%s %s\n",malelow.name,malelow.id);
+    if(count1==0||count2==0) printf("%s","NA\n");
+        else printf("%d\n",diff);
+    return 0;
+}
