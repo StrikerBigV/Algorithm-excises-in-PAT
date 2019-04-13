@@ -1,0 +1,37 @@
+#include <iostream>
+#include <cstdio>
+using namespace std;
+struct poly
+{
+    int exp;
+    double cof;
+}poly1[1001];
+double res[2001];
+int main()
+{
+    int K1,K2,Kr=0;
+    scanf("%d",&K1);
+    for(int i=0;i<K1;i++)
+        scanf("%d %lf",&poly1[i].exp,&poly1[i].cof);
+    scanf("%d",&K2);
+    for(int i=0;i<K2;i++)
+    {
+        int exp;
+        double cof;
+        scanf("%d %lf",&exp,&cof);
+        for(int j=0;j<K1;j++)
+            res[exp+poly1[j].exp]+=(cof*poly1[j].cof);
+    }
+    for(int i=0;i<2001;i++)
+    {
+        if(res[i]!=0.0)
+        Kr++;
+    }
+    printf("%d",Kr);
+    for(int i=2001;i>=0;i--)
+    {
+        if(res[i]!=0.0)
+            printf(" %d %.1f",i,res[i]);
+    }
+    return 0;
+}
