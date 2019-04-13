@@ -1,0 +1,44 @@
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+using namespace std;
+const int maxn=10010;
+int A[maxn],dp[maxn];
+int HashTable[210];
+int main()
+{
+    int n,m,l,x;
+    scanf("%d",&n);
+    scanf("%d",&m);
+    memset(HashTable,-1,sizeof(HashTable));
+    for(int i=0;i<m;i++)
+    {
+        scanf("%d",&x);
+        HashTable[x]=i;
+    }
+    int num=0;
+    scanf("%d",&l);
+    for(int i=0;i<l;i++)
+    {
+        scanf("%d",&x);
+        if(HashTable[x]>=0)
+        {
+            A[num++]=HashTable[x];
+        }
+    }
+    int res=-1;
+    for(int i=0;i<num;i++)
+    {
+        dp[i]=1;
+        for(int j=0;j<i;j++)
+        {
+            if(A[j]<=A[i]&&dp[i]<dp[j]+1)
+            {
+                dp[i]=dp[j]+1;
+            }
+        }
+        if(dp[i]>res) res=dp[i];
+    }
+    printf("%d\n",res);
+    return 0;
+}
